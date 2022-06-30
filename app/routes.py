@@ -1,12 +1,10 @@
 from flask import (
     Flask, 
     request,
-    abort,
     Response
 )
-from bson import ObjectId
 from datetime import datetime
-from app.database import user
+from app.database import user, cars
 
 app = Flask(__name__)
  
@@ -102,4 +100,15 @@ def update_user(pk):
 def delete_user(pk):
     user.delete(pk)
     return "",204
-  
+
+
+#  ---------------- VEHICLES -------------------
+# GET VEHICLES PER USER
+@app.get("/reports/cars")
+def get_all_vehicles_per_user():
+    cars_list = cars.scan()
+    out= {
+        "status":"ok",
+        "cars":cars_list
+    }
+    return out
